@@ -1,4 +1,3 @@
-require 'byebug'
 require 'rspec'
 require 'ladon-watir/browser_automation'
 require 'ladon-watir/page_object_state'
@@ -35,17 +34,23 @@ class ExampleBrowserAutomation < WatirBrowserAutomation
   end
 
   def execute
-    byebug
     header.eq? 'Example Domain'
   end
 end
 
 RSpec.describe WatirBrowserAutomation do
   describe '#run' do
-    target_automation_class = ExampleBrowserAutomation;
-    target_automation = target_automation_class.spawn()
-    target_automation_class.all_phases.each_with_index do |phase_name, idx|
-      target_automation.run(to_index: idx) # this is the interesting line
+    context 'Run against example.com' do
+      target_automation_class = ExampleBrowserAutomation;
+      target_automation = target_automation_class.spawn()
+
+      subject { -> { target_automation } }
+
+      target_automation_class.all_phases.each_with_index do |phase_name, idx|
+        target_automation.run(to_index: idx)
+      end
+
+      it { is_expected.not_to raise_error }
     end
   end
 end

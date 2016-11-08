@@ -11,9 +11,10 @@ Gem::Specification.new do |s|
   s.files       = Dir['lib/**/*.rb']
   s.homepage    = 'http://rubygems.org/gems/ladon-watir'
   s.license     = 'MIT' # TODO
-  # s.executables << 'ladon-run'
   s.required_ruby_version = '>= 2.1.0' # due to use of required keyword args
-  # s.add_runtime_dependency 'pry', '~> 0.10' # for interactive mode support in ladon-run
+  s.add_runtime_dependency 'ladon', '>= 1.0.0'
+  s.add_runtime_dependency 'watir-webdriver', '>= 0.9'
+  s.add_runtime_dependency 'page-object', '>= 1.2'
   s.add_development_dependency 'rspec', '~> 3.5' # for specs
-  # s.add_development_dependency 'rubocop', '~> 0.45' # for linting
+  s.add_development_dependency 'rubocop', '~> 0.45' # for linting
 end
