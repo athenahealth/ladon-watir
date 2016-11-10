@@ -1,0 +1,12 @@
+AllCops:
+  TargetRubyVersion: 2.1
+
+# Let's optimize for readability.
+Style/RedundantReturn:
+  Enabled: false
+
+Style/RedundantBegin:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false

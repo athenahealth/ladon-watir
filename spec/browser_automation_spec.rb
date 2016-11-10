@@ -27,10 +27,15 @@ class ExampleBrowserAutomation < WatirBrowserAutomation
 
   def build_model
     super
+
     def model.selection_strategy(transition_options)
       return transition_options[0] unless transition_options.size != 1
     end
-    model.use_state_type(ExamplePageObjectState, strategy: Ladon::Modeler::LoadStrategy::EAGER)
+
+    model.use_state_type(
+      ExamplePageObjectState,
+      strategy: Ladon::Modeler::LoadStrategy::EAGER
+    )
   end
 
   def execute
@@ -41,12 +46,12 @@ end
 RSpec.describe WatirBrowserAutomation do
   describe '#run' do
     context 'Run against example.com' do
-      target_automation_class = ExampleBrowserAutomation;
-      target_automation = target_automation_class.spawn()
+      target_automation_class = ExampleBrowserAutomation
+      target_automation = target_automation_class.spawn
 
       subject { -> { target_automation } }
 
-      target_automation_class.all_phases.each_with_index do |phase_name, idx|
+      target_automation_class.all_phases.each_with_index do |_phase_name, idx|
         target_automation.run(to_index: idx)
       end
 
