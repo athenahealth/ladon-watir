@@ -1,14 +1,14 @@
 require 'rspec'
-require 'ladon-watir/browser_automation'
-require 'ladon-watir/page_object_state'
+require 'ladon/watir/browser_automation'
+require 'ladon/watir/page_object_state'
 
-class ExamplePageObjectState < PageObjectState
+class ExamplePageObjectState < Ladon::Watir::PageObjectState
   def self.model_html(metaclass)
     metaclass.h1(:header)
   end
 end
 
-class ExampleBrowserAutomation < WatirBrowserAutomation
+class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
   def default_url
     'http://example.com'
   end
@@ -28,10 +28,6 @@ class ExampleBrowserAutomation < WatirBrowserAutomation
   def build_model
     super
 
-    def model.selection_strategy(transition_options)
-      return transition_options[0] unless transition_options.size != 1
-    end
-
     model.use_state_type(
       ExamplePageObjectState,
       strategy: Ladon::Modeler::LoadStrategy::EAGER
@@ -43,7 +39,7 @@ class ExampleBrowserAutomation < WatirBrowserAutomation
   end
 end
 
-RSpec.describe WatirBrowserAutomation do
+RSpec.describe Ladon::Watir::BrowserAutomation do
   describe '#run' do
     context 'Run against example.com' do
       target_automation_class = ExampleBrowserAutomation
