@@ -50,19 +50,19 @@ RSpec::Matchers.define :be_a_success do
   end
 end
 
-RSpec.describe Ladon::Watir::BrowserAutomation do
-  describe '#run' do
-    context 'Run against example.com' do
-      target_automation_class = ExampleBrowserAutomation
-      target_automation = target_automation_class.spawn
+# RSpec.describe Ladon::Watir::BrowserAutomation do
+#   describe '#run' do
+#     context 'Run against example.com' do
+#       target_automation_class = ExampleBrowserAutomation
+#       target_automation = target_automation_class.spawn
 
-      subject { target_automation }
+#       subject { target_automation }
 
-      target_automation_class.all_phases.each_with_index do |_phase_name, idx|
-        target_automation.run(to_index: idx)
-      end
+#       target_automation_class.all_phases.each_with_index do |_phase_name, idx|
+#         target_automation.run(to_index: idx)
+#       end
 
-      it { is_expected.to be_a_success }
-    end
-  end
-end
+#       it { is_expected.to be_a_success }
+#     end
+#   end
+# end
