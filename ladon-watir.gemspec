@@ -6,15 +6,19 @@ Gem::Specification.new do |s|
   s.description = <<-EOF
     Use Ladon and Watir to automate end-to-end web application workflows.
   EOF
-  s.authors     = ['Reagan Eggert', 'Kevin Weaver']
+  s.authors     = ['Reagan Eggert', 'Kevin Weaver', 'Shayne Snow']
   s.email       = 'kweaver@athenahealth.com'
   s.files       = Dir['lib/**/*.rb']
   s.homepage    = 'http://rubygems.org/gems/ladon-watir'
   s.license     = 'MIT' # TODO
+
   s.required_ruby_version = '>= 2.1.0' # due to use of required keyword args
+
   s.add_runtime_dependency 'ladon', '>= 1.0.0'
   s.add_runtime_dependency 'watir-webdriver', '>= 0.9'
   s.add_runtime_dependency 'page-object', '>= 1.2'
+
+  s.add_development_dependency 'rake', '~> 11.3' # for convenient rake tasks
   s.add_development_dependency 'rspec', '~> 3.5' # for specs
   s.add_development_dependency 'rubocop', '~> 0.45' # for linting
 end
