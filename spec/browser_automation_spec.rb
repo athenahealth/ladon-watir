@@ -1,8 +1,13 @@
 require 'rspec'
+require 'ladon'
 require 'ladon/watir/browser_automation'
 require 'ladon/watir/page_object_state'
 
 class ExamplePageObjectState < Ladon::Watir::PageObjectState
+  def self.transitions
+    []
+  end
+
   def self.model_html(metaclass)
     metaclass.h1(:header)
   end
@@ -35,7 +40,13 @@ class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
   end
 
   def execute
-    header.eq? 'Example Domain'
+    self.model.current_state.header.eql? 'Example Domain'
+  end
+end
+
+RSpec::Matchers.define :be_a_success do
+  match do |actual|
+    return actual.result.success?
   end
 end
 
@@ -45,13 +56,13 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
       target_automation_class = ExampleBrowserAutomation
       target_automation = target_automation_class.spawn
 
-      subject { -> { target_automation } }
+      subject { target_automation }
 
       target_automation_class.all_phases.each_with_index do |_phase_name, idx|
         target_automation.run(to_index: idx)
       end
 
-      it { is_expected.not_to raise_error }
+      it { is_expected.to be_a_success }
     end
   end
 end

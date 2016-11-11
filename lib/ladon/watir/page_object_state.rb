@@ -1,5 +1,6 @@
 require 'ladon'
 require 'page-object'
+require 'ladon/watir'
 
 module Ladon
   module Watir

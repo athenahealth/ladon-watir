@@ -60,7 +60,7 @@ module Ladon
       # @private
       # @return [Watir::Browser] The new browser object.
       def local_browser(type:)
-        return Watir::Browser.new(type)
+        return ::Watir::Browser.new(type)
       end
 
       # Constructs a browser to be driven remotely on a grid.
@@ -77,7 +77,7 @@ module Ladon
         # grid resources free up.
         @client.timeout = 60 * 20 # seconds.
 
-        return Watir::Browser.new(
+        return ::Watir::Browser.new(
           :remote,
           url: url.to_s,
           desired_capabilities: capabilities,
