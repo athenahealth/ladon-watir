@@ -7,7 +7,7 @@ module Ladon
     # representing states.
     class WebAppFiniteStateMachine < Ladon::Modeler::FiniteStateMachine
       def valid_state?(state_class)
-        super && state_class < PageObjectState
+        super && state_class < Ladon::Watir::PageObjectState
       end
 
       def new_state_instance(state_class)
