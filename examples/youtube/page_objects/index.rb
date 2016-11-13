@@ -1,6 +1,5 @@
 require 'ladon'
 require 'ladon/watir'
-require_relative '../page_objects/results'
 
 # Represents the main page of youtube.com.
 class YouTubeIndexPage < Ladon::Watir::PageObjectState
@@ -9,7 +8,7 @@ class YouTubeIndexPage < Ladon::Watir::PageObjectState
       Ladon::Modeler::Transition.new do |t|
         t.to_load_target_state_type { require_relative 'results' }
         t.to_identify_target_state_type { YouTubeResultsPage }
-        t.when { |page| page.search.length }
+        t.when { |page| !page.search.empty? }
         t.by(&:execute_search)
       end
     ]

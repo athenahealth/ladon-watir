@@ -1,5 +1,4 @@
 require 'ladon/watir'
-require_relative '../page_objects/watch'
 
 # Represents the search results page of youtube.com at /results.
 class YouTubeResultsPage < Ladon::Watir::PageObjectState
@@ -8,7 +7,7 @@ class YouTubeResultsPage < Ladon::Watir::PageObjectState
       Ladon::Modeler::Transition.new do |t|
         t.to_load_target_state_type { require_relative 'watch' }
         t.to_identify_target_state_type { YouTubeWatchPage }
-        t.when { true }
+        # t.when { true }
         t.by(&:select_result)
       end
     ]

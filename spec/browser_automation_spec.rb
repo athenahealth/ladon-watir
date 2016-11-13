@@ -14,7 +14,10 @@ class ExamplePageObjectState < Ladon::Watir::PageObjectState
 end
 
 class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
-  def default_url
+  # Assertion message for header verification
+  HEADER_MSG = 'Header must say "Example Domain"'
+
+  def self.default_url
     'http://example.com'
   end
 
@@ -30,6 +33,10 @@ class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
     false
   end
 
+  # Build the model as specified in +BrowserAutomation+, then load a starting
+  # page into the model and make it the current model state.
+  #
+  # This implementation uses the model for the example.com home page.
   def build_model
     super
 
@@ -39,29 +46,30 @@ class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
     )
   end
 
+  # Our automation verifies that the page's header says 'Example Domain'
   def execute
-    self.model.current_state.header.eql? 'Example Domain'
+    assert(HEADER_MSG) { model.current_state.header.eql? 'Example Domain' }
   end
 end
 
+# Define a matcher for the Ladon::Automator::Result that calling an
+# automation's +run+ method returns. This matcher verifies that the
+# Result indicates a successful outcome.
 RSpec::Matchers.define :be_a_success do
   match do |actual|
-    return actual.result.success?
+    puts actual
+    return actual.success?
   end
 end
 
 # RSpec.describe Ladon::Watir::BrowserAutomation do
 #   describe '#run' do
-#     context 'Run against example.com' do
-#       target_automation_class = ExampleBrowserAutomation
-#       target_automation = target_automation_class.spawn
-
-#       subject { target_automation }
-
-#       target_automation_class.all_phases.each_with_index do |_phase_name, idx|
-#         target_automation.run(to_index: idx)
-#       end
-
+#     context 'when run against example.com' do
+#       let(:automation) { ExampleBrowserAutomation.spawn }
+#       subject { automation.run }
+#
+#       it { is_expected.to be_an_instance_of(Ladon::Automator::Result)}
+#
 #       it { is_expected.to be_a_success }
 #     end
 #   end
