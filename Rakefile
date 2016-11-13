@@ -1,13 +1,11 @@
 require 'rubocop/rake_task'
 require 'rspec/core/rake_task'
 
-# Run "rake rubocop" to run rubocop against the lib/ folder
-# Run "rake rubocop:auto_correct" to run rubocop against lib/ and auto-fix where possible
-RuboCop::RakeTask.new(:rubocop) do |task|
-  task.patterns = ['lib/**/*.rb']
-end
+# Run "rake rubocop" to run rubocop.
+# Run "rake rubocop:auto_correct" to run rubocop and auto-fix where possible.
+RuboCop::RakeTask.new(:rubocop)
 
-# run "rake spec" to execute all RSpec tests
+# Run "rake spec" to execute all RSpec tests.
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/**/*_spec.rb'
 end

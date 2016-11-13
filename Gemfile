@@ -1,8 +1,10 @@
 source 'https://rubygems.org' do
+  gem 'rake'
   gem 'rspec'
   gem 'rubocop'
   gem 'watir-webdriver'
   gem 'page-object'
+  gem 'simplecov', require: false, group: :test
 end
 
 gem 'pry'

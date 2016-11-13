@@ -15,7 +15,7 @@ end
 
 class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
   # Assertion message for header verification
-  HEADER_MSG = 'Header must say "Example Domain"'
+  HEADER_MSG = 'Header must say "Example Domain"'.freeze
 
   def self.default_url
     'http://example.com'
@@ -62,15 +62,18 @@ RSpec::Matchers.define :be_a_success do
   end
 end
 
-# RSpec.describe Ladon::Watir::BrowserAutomation do
-#   describe '#run' do
-#     context 'when run against example.com' do
-#       let(:automation) { ExampleBrowserAutomation.spawn }
-#       subject { automation.run }
-#
-#       it { is_expected.to be_an_instance_of(Ladon::Automator::Result)}
-#
-#       it { is_expected.to be_a_success }
-#     end
-#   end
-# end
+RSpec.describe Ladon::Watir::BrowserAutomation do
+  describe '#run' do
+    context 'when run against example.com' do
+      let(:automation) { ExampleBrowserAutomation.spawn }
+      subject { automation.run }
+
+      it { is_expected.to be_an_instance_of(Ladon::Automator::Result) }
+
+      # Commenting this out for now. This will fail if chromedriver is not
+      # installed in the test environment.
+      # TODO: Mock depenencies to make this more of a true unit test.
+      # it { is_expected.to be_a_success }
+    end
+  end
+end
