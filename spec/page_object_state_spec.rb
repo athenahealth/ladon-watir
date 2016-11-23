@@ -1,10 +1,6 @@
 require 'ladon/watir/page_object_state'
 
 class ExamplePageObjectState < Ladon::Watir::PageObjectState
-  def self.transitions
-    []
-  end
-
   def self.model_html(metaclass)
     metaclass.h1(:header)
     metaclass.h2(:case_1_sub_header) if @@test_case == 1
@@ -53,5 +49,11 @@ RSpec.describe Ladon::Watir::PageObjectState do
       it { is_expected.not_to respond_to :case_2_sub_header }
       it { is_expected.not_to respond_to :case_2_sub_header_element }
     end
+  end
+
+  describe '#transitions' do
+    subject { ExamplePageObjectState.transitions }
+
+    it { is_expected.to be_a_kind_of Enumerable }
   end
 end
