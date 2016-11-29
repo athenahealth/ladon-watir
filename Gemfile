@@ -2,8 +2,8 @@ source 'https://rubygems.org' do
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
-  gem 'watir-webdriver', '~> 0.9'
-  gem 'page-object', '~> 1.2'
+  gem 'watir', '~> 6.0'
+  gem 'page-object', '~> 2.0'
   gem 'simplecov', require: false, group: :test
 end
 

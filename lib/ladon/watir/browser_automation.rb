@@ -1,4 +1,4 @@
-require 'watir-webdriver'
+require 'watir'
 require 'ladon'
 require 'ladon/watir/web_app_finite_state_machine'
 
