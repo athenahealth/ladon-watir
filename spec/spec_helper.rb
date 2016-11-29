@@ -1,6 +1,6 @@
 require 'rspec'
 require 'simplecov'
-require 'watir-webdriver'
+require 'watir'
 
 SimpleCov.start do
   add_filter '/spec/'

@@ -14,9 +14,9 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.1.0' # due to use of required keyword args
 
-  s.add_runtime_dependency 'ladon', '>= 1.0.0'
-  s.add_runtime_dependency 'watir-webdriver', '~> 0.9'
-  s.add_runtime_dependency 'page-object', '~> 1.2'
+  s.add_runtime_dependency 'ladon', '~> 1.0'
+  s.add_runtime_dependency 'watir', '~> 6.0'
+  s.add_runtime_dependency 'page-object', '~> 2.0'
 
   s.add_development_dependency 'rake', '~> 11.3' # for convenient rake tasks
   s.add_development_dependency 'rspec', '~> 3.5' # for specs
