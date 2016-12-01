@@ -12,9 +12,7 @@ class FakeWatirBrowser < Watir::Browser
     # Intentionally does not call `super` to avoid setting up a bridge.
   end
 
-  def goto(_url)
-  end
+  def goto(_url); end
 
-  def quit
-  end
+  def quit; end
 end
