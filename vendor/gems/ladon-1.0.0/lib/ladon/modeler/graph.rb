@@ -75,8 +75,7 @@ module Ladon
       # @abstract
       #
       # @param [Array<Transition>] transitions List of detected invalid transitions.
-      def on_invalid_transitions(transitions)
-      end
+      def on_invalid_transitions(transitions); end
 
       # Loads the given +state_class+ into this state machine.
       #
@@ -130,15 +129,12 @@ module Ladon
       # @param [Class] state_class The state to associate the +transitions+ with.
       # @param [Set<Transition>] transitions The potential transitions to load into this graph.
       # @return [Set<Ladon::Modeler::Transition>] The transitions that were loaded and associated with +state_class+.
-      #   Returns nil if no valid transitions were actually detected.
       def add_transitions(state_class, transitions)
         raise ArgumentError, "No known state #{state_class}!" unless state_loaded?(state_class)
         valid_groups = transitions.group_by { |transition| transition.is_a?(Ladon::Modeler::Transition) }
         on_invalid_transitions(valid_groups[false]) if valid_groups.key?(false)
 
-        return nil unless valid_groups.key?(true)
-
-        added = Set.new(valid_groups[true]) - @transitions[state_class] # detect the truly "new" transitions
+        added = Set.new(valid_groups.fetch(true, [])) - @transitions[state_class] # detect the truly "new" transitions
         @transitions[state_class] += added # add them
         added # return them
       end
