@@ -1,8 +1,6 @@
-$LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../../../lib")
-
 require 'ladon'
 require 'ladon/watir'
-require_relative '../page_objects/index'
+require 'models/page_objects/index'
 
 # Run this automation if you want to listen to nice music.
 # `ladon-run -a ./nice_music.rb -s NiceMusicAutomation`
