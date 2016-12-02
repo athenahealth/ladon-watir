@@ -1,8 +1,9 @@
 require 'ladon/watir/page_object_state'
 
 class ExamplePageObjectState < Ladon::Watir::PageObjectState
-  def self.model_html(metaclass)
-    metaclass.h1(:header)
+  h1(:header)
+
+  def instance_model_html(metaclass)
     metaclass.h2(:case_1_sub_header) if @@test_case == 1
     metaclass.h2(:case_2_sub_header) if @@test_case == 2
   end
