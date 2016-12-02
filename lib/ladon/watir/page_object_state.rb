@@ -29,6 +29,8 @@ module Ladon
         super
       end
 
+      # Called at the end of PageObject#initialize. Sets up instance-level HTML
+      # modeling methods.
       def initialize_page
         instance_model_html(singleton_class)
       end
