@@ -2,6 +2,8 @@ require 'ladon/watir'
 
 # Represents the search results page of youtube.com at /results.
 class YouTubeResultsPage < Ladon::Watir::PageObjectState
+  div(:results, id: 'results')
+
   def self.transitions
     [
       Ladon::Modeler::Transition.new do |t|
@@ -11,10 +13,6 @@ class YouTubeResultsPage < Ladon::Watir::PageObjectState
         t.by(&:select_result)
       end
     ]
-  end
-
-  def self.model_html(metaclass)
-    metaclass.div(:results, id: 'results')
   end
 
   def find_result(title:)

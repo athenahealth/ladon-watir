@@ -18,18 +18,21 @@ module Ladon
     #
     # @attr_reader [Watir::Browser] browser A Watir-WebDriver browser instance.
     class PageObjectState < Ladon::Modeler::State
+      include PageObject
+
       attr_reader :browser
 
       # Create a new instance of this class.
       def initialize(browser)
         @browser = browser
-        super()
 
-        # set up metaclass to facilitate page-object modeling
-        _page_object_class_workaround
+        super
+      end
 
-        # run this class' HTML modeling on the metaclass for instance safety
-        self.class.model_html(singleton_class)
+      # Called at the end of PageObject#initialize. Sets up instance-level HTML
+      # modeling methods.
+      def initialize_page
+        instance_model_html(singleton_class)
       end
 
       # Class-level method defining the transitions that are available from a
@@ -44,39 +47,22 @@ module Ladon
         []
       end
 
-      # Every +PageObjectState+ must model the HTML elements available on the
-      # page it models; this method should be used to do so.
+      # Defines HTML modeling methods that may vary per-instance of this class.
       #
       # @param [Class] The class the model will be effected upon.
       #   When creating instances, this will be the +singleton_class+
       #   of the instance being created.
       #
-      # We write our HTML model method in context of the target class
-      # This is because page-object only supports class-level modeling.
+      # Because page-object only supports class-level modeling, we write
+      # instance-level HTML model methods in context of the target class.
       #
-      # Our PageObject-style States really want to have instance-level
+      # Some PageObject-style States really want to have instance-level
       # modeling, since each instance may be created under different context
       # in-ruby-process, and we don't want them conflicting.
       #
       # So, we're using this approach so we can put our HTML modeling on the
       # per-instance singleton class of each PageObjectState instance.
-      def self.model_html(_target_class)
-        raise Ladon::MissingImplementationError, 'self.model_html'
-      end
-
-      private
-
-      # This is necessary to work around the class-level modeling design
-      # of the page-object gem.
-      #
-      # @private
-      def _page_object_class_workaround
-        # include PageObject on the metaclass
-        singleton_class.send(:include, PageObject)
-
-        # Hack in the PageObject initializer
-        initialize_browser(browser)
-      end
+      def instance_model_html(_target_class); end
     end
   end
 end
