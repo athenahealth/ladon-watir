@@ -1,5 +1,5 @@
-require 'watir'
 require 'ladon'
+require 'ladon/watir/browser'
 require 'ladon/watir/web_app_finite_state_machine'
 
 module Ladon
@@ -75,11 +75,16 @@ module Ladon
       def build_browser
         browser_type = flags.get(BROWSER_FLAG, default_to: default_browser)
                             .to_sym
+
         grid_url = flags.get(GRID_FLAG, default_to: NO_GRID_DEFAULT)
 
         return local_browser(type: browser_type) if grid_url == NO_GRID_DEFAULT
 
-        return remote_browser(url: grid_url, type: browser_type)
+        platform = flags.get(OS_FLAG, default_to: default_platform).to_sym
+
+        return remote_browser(url: grid_url,
+                              type: browser_type,
+                              platform: platform)
       end
 
       # The first phase of the automation.
@@ -111,9 +116,7 @@ module Ladon
       #   May be the constant value +FULL_SCREEN_SIZE+ to indicate to maximize
       #   available width.
       def browser_width=(width)
-        if width == FULL_SCREEN_SIZE
-          width = browser.execute_script('return screen.width;')
-        end
+        width = browser.screen_width if width == FULL_SCREEN_SIZE
 
         browser.window.resize_to(width.to_i, browser.window.size.height)
       end
@@ -125,9 +128,7 @@ module Ladon
       #   May be the constant value +FULL_SCREEN_SIZE+ to indicate to maximize
       #   available height.
       def browser_height=(height)
-        if height == FULL_SCREEN_SIZE
-          height = browser.execute_script('return screen.height;')
-        end
+        height = browser.screen_height if height == FULL_SCREEN_SIZE
 
         browser.window.resize_to(browser.window.size.width, height.to_i)
       end
@@ -136,31 +137,27 @@ module Ladon
 
       # Constructs a browser to be driven locally.
       #
-      # @private
-      # @return [Watir::Browser] The new browser object.
+      # @param [Symbol, Selenium::WebDriver] type :firefox, :ie, :chrome,
+      #   :remote or Selenium::WebDriver instance. See
+      #   Watir::Browser#initialize's browser parameter.
+      #
+      # @return [Ladon::Watir::Browser] The new browser object.
       def local_browser(type:)
-        return ::Watir::Browser.new(type)
+        return Ladon::Watir::Browser.new_local(type: type)
       end
 
       # Constructs a browser to be driven remotely on a grid.
       #
-      # @private
-      # @return [Watir::Browser] The new browser object.
-      def remote_browser(url:, type:)
-        platform = flags.get(OS_FLAG, default_to: default_platform).to_sym
-        capabilities = Selenium::WebDriver::Remote::Capabilities
-                       .send(type, platform: platform)
-
-        @client = Selenium::WebDriver::Remote::Http::Default.new
-
-        # Increase timeout to 20 minutes to allow queued tests to process when
-        # grid resources free up.
-        @client.timeout = 60 * 20 # seconds.
-
-        return ::Watir::Browser.new(:remote,
-                                    url: url.to_s,
-                                    desired_capabilities: capabilities,
-                                    http_client: @client)
+      # @param [Symbol, Selenium::WebDriver] type The browser type. See
+      #   Watir::Browser#initialize's browser parameter.
+      # @param [String] url The URL of the remote grid.
+      # @param [Symbol] platform The OS on which to host the browser.
+      #
+      # @return [Ladon::Watir::Browser] The new browser object.
+      def remote_browser(url:, type:, platform:)
+        return Ladon::Watir::Browser.new_remote(url: url.to_s,
+                                                type: type,
+                                                platform: platform)
       end
     end
   end
