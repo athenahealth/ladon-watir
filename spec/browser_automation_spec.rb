@@ -101,6 +101,66 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
     end
   end
 
+  describe '#screenshot' do
+    let(:config) { Ladon::Automator::Config.new(log_level: :WARN) }
+
+    let(:automation) do
+      auto = ExampleBrowserAutomation.new(config)
+
+      allow(auto).to receive(:build_browser) { FakeWatirBrowser.new }
+      auto.build_model
+
+      return auto
+    end
+
+    it 'should take screenshots and store them in the result' do
+      allow(automation.browser).to receive(:screenshot) do
+        fake_screenshot_class = Class.new do
+          def base64
+            'fake base64 encoded screenshot'
+          end
+        end
+
+        fake_screenshot_class.new
+      end
+
+      automation.screenshot('first screenshot')
+      automation.screenshot('second screenshot')
+
+      automation.teardown
+
+      expect(automation.result.data_log['screenshots'])
+        .to eql('first screenshot' => 'fake base64 encoded screenshot',
+                'second screenshot' => 'fake base64 encoded screenshot')
+    end
+
+    context 'when @browser.screenshot throws an exception' do
+      it 'should log a warning' do
+        allow(automation.browser).to receive(:screenshot) do
+          raise 'Something went horribly wrong'
+        end
+
+        automation.screenshot('first screenshot')
+        automation.screenshot('second screenshot')
+
+        automation.teardown
+
+        warnings = automation.result.logger.entries.map do |entry|
+          entry.msg_lines[0] if entry.level.eql?(:WARN)
+        end.compact
+
+        expect(warnings).to include(
+          "Unable to take screenshot 'first screenshot' due to an error "\
+          '(RuntimeError: Something went horribly wrong)'
+        )
+        expect(warnings).to include(
+          "Unable to take screenshot 'second screenshot' due to an error "\
+          '(RuntimeError: Something went horribly wrong)'
+        )
+      end
+    end
+  end
+
   describe '#run' do
     context 'when run against example.com' do
       let(:automation) do

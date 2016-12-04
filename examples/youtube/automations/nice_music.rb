@@ -28,6 +28,16 @@ class NiceMusicAutomation < Ladon::Watir::BrowserAutomation
   end
 
   def execute
+    navigate_to_video
+
+    # Take a screenshot after 30 seconds.
+    sleep 30
+    screenshot('Rick wearing sunglasses and dancing')
+
+    sleep 182 # Adds up to 3:32, just long enough to listen to the whole song.
+  end
+
+  def navigate_to_video
     model.current_state do |page|
       page.enter_search(term: 'never gonna give you up')
     end
@@ -39,7 +49,5 @@ class NiceMusicAutomation < Ladon::Watir::BrowserAutomation
     end
 
     model.make_transition
-
-    sleep 212 # 3:32, just long enough to listen to the whole song.
   end
 end
