@@ -11,6 +11,7 @@ module Ladon
     # @attr_reader [Watir::Browser] browser The Watir WebDriver browser object.
     class BrowserAutomation < Ladon::Automator::ModelAutomation
       attr_reader :browser
+      attr_reader :screenshots
 
       NO_GRID_DEFAULT = :NONE
       FULL_SCREEN_SIZE = :FULL
@@ -66,6 +67,7 @@ module Ladon
       #   machine that will power the automation.
       def build_model
         @browser = self.build_browser
+        @screenshots = {}
         self.model = Ladon::Watir::WebAppFiniteStateMachine.new(@browser)
       end
 
@@ -107,6 +109,8 @@ module Ladon
       # The last phase of the automation. Quits the browser.
       def teardown
         @browser.quit
+
+        self.result.record_data('screenshots', @screenshots)
       end
 
       # Resize the browser's width to the given value.
@@ -131,6 +135,24 @@ module Ladon
         height = browser.screen_height if height == FULL_SCREEN_SIZE
 
         browser.window.resize_to(browser.window.size.width, height.to_i)
+      end
+
+      # Take a screenshot of the current appearance of the browser instance.
+      #
+      # NOTE: Timing is important when using this method. For example, if you
+      # request a screenshot immediately after submitting a form, you may get a
+      # shot of a blank page if there is dynamic content loading (e.g., via
+      # XHR).
+      #
+      # @param [String] name Title to associate with the screenshot that will
+      #   be taken.
+      def screenshot(name)
+        begin
+          @screenshots[name] = @browser.screenshot.base64
+        rescue => ex
+          @logger.warn("Unable to take screenshot '#{name}' due to an error "\
+                       "(#{ex.class}: #{ex})")
+        end
       end
 
       private
