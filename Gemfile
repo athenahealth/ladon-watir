@@ -7,6 +7,9 @@ source 'https://rubygems.org' do
   gem 'watir', '~> 6.0'
 end
 
-gem 'ladon', '1.0.0', path: './vendor/gems/ladon-1.0.0'
+source 'http://rubygems.athenahealth.com' do
+  gem 'ladon', '~> 1.0'
+end
+
 gem 'ladon-watir', path: '.'
 gem 'pry'
