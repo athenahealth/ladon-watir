@@ -18,4 +18,4 @@ Feel free to [open an issue](https://gitlab.athenahealth.com/ladon/ladon-watir/i
 
 ## Contributing
 
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and open a pull request.
+All are welcome to contribute! Please read the [contribution guidelines](CONTRIBUTING.md) first.
