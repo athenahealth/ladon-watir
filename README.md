@@ -7,10 +7,7 @@
 ## Installation
 
 1. Install Ruby 2.1+.
-2. Install [Ladon 1.0+](https://gitlab.athenahealth.com/ladon/ladon).
-3. Clone this repository and `cd` into your checkout directory.
-4. **Build** the Ladon::Watir gem: `gem build ladon-watir.gemspec`.
-5. **Install** the built Ladon::Watir gem: `gem install ladon-watir-0.0.1.gem`.
+2. Run `gem install -s http://rubygems.athenahealth.com ladon-watir`.
 
 ## Support
 
