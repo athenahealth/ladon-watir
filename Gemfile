@@ -1,5 +1,8 @@
 source 'https://rubygems.org' do
   gem 'page-object', '~> 2.0'
+  gem 'pry'
+  gem 'pry-byebug'
+  gem 'pry-stack_explorer'
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
@@ -12,4 +15,3 @@ source 'http://rubygems.athenahealth.com' do
 end
 
 gem 'ladon-watir', path: '.'
-gem 'pry'
