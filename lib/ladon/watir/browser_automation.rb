@@ -16,7 +16,7 @@ module Ladon
       NO_GRID_DEFAULT = :NONE
       FULL_SCREEN_SIZE = :FULL
 
-      OS_FLAG = :os
+      PLATFORM_FLAG = :platform
       BROWSER_FLAG = :browser
       GRID_FLAG = :grid_url
 
@@ -59,6 +59,13 @@ module Ladon
         'about:blank'
       end
 
+      # Default OS platform that remote browser will be run on.
+      #
+      # @return [Symbol] Default platform for browser environment.
+      def default_platform
+        :any
+      end
+
       # Builds the +Ladon::Watir::WebAppFiniteStateMachine+ that will represent
       # the web application, with states as page objects and transitions driven
       # by browser navigation.
@@ -82,7 +89,7 @@ module Ladon
 
         return local_browser(type: browser_type) if grid_url == NO_GRID_DEFAULT
 
-        platform = flags.get(OS_FLAG, default_to: default_platform).to_sym
+        platform = flags.get(PLATFORM_FLAG, default_to: default_platform).to_sym
 
         return remote_browser(url: grid_url,
                               type: browser_type,
