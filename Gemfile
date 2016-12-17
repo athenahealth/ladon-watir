@@ -6,6 +6,7 @@ source 'https://rubygems.org' do
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
+  gem 'rubygems-tasks'
   gem 'simplecov', require: false, group: :test
   gem 'watir', '~> 6.0'
 end

@@ -1,3 +1,8 @@
+stages:
+  - test
+  - build
+  - deploy
+
 before_script:
   - ruby -v
   - which ruby
@@ -5,9 +10,26 @@ before_script:
   - bundle install --jobs $(nproc)  "${FLAGS[@]}"
 
 rspec:
+  stage: test
   script:
     - bundle exec rake spec
 
 rubocop:
+  stage: test
   script:
     - bundle exec rake rubocop
+
+build:
+  stage: build
+  script:
+    - gem build ladon-watir.gemspec
+  only:
+    - tags
+
+deploy:
+  stage: deploy
+  environment:
+    - name: production
+    - url: http://rubygems.athenahealth.com
+  only:
+    - tags
