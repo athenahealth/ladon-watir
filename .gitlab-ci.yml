@@ -39,4 +39,4 @@ deploy:
     - build
   only:
     - master@ladon/ladon-watir
-    - tags
+  when: manual
