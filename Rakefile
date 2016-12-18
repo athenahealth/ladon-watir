@@ -11,6 +11,4 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/**/*_spec.rb'
 end
 
-Gem::Tasks.new do |tasks|
-  tasks.push.host = 'rubygems.athenahealth.com'
-end
+Gem::Tasks.new(push: false)
