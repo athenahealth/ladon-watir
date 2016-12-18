@@ -25,8 +25,6 @@ build:
     - bundle exec rake build
   artifacts:
     untracked: true
-  only:
-    - tags
 
 deploy:
   stage: deploy
