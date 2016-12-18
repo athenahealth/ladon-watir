@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ladon-watir'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2.pre'
   s.date        = '2016-11-08'
   s.summary     = 'Ladon Watir'
   s.description = <<-EOF
