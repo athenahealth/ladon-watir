@@ -1,4 +1,5 @@
 source 'https://rubygems.org' do
+  gem 'geminabox'
   gem 'page-object', '~> 2.0'
   gem 'pry'
   gem 'pry-byebug'
