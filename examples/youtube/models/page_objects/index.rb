@@ -9,8 +9,8 @@ class YouTubeIndexPage < Ladon::Watir::PageObjectState
   def self.transitions
     [
       Ladon::Modeler::Transition.new do |t|
-        t.to_load_target_state_type { require 'models/page_objects/results' }
-        t.to_identify_target_state_type { YouTubeResultsPage }
+        t.target_loader { require 'models/page_objects/results' }
+        t.target_identifier { YouTubeResultsPage }
         t.when { |page| !page.search.empty? }
         t.by(&:execute_search)
       end
