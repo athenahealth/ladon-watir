@@ -7,9 +7,8 @@ class YouTubeResultsPage < Ladon::Watir::PageObjectState
   def self.transitions
     [
       Ladon::Modeler::Transition.new do |t|
-        t.to_load_target_state_type { require 'models/page_objects/watch' }
-        t.to_identify_target_state_type { YouTubeWatchPage }
-        # t.when { true }
+        t.target_loader { require 'models/page_objects/watch' }
+        t.target_identifier { YouTubeWatchPage }
         t.by(&:select_result)
       end
     ]
