@@ -10,6 +10,8 @@ module Ladon
     #
     # @attr_reader [Watir::Browser] browser The Watir WebDriver browser object.
     class BrowserAutomation < Ladon::Automator::ModelAutomation
+      abstract
+
       attr_reader :browser
       attr_reader :screenshots
 
