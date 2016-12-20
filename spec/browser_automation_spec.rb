@@ -49,14 +49,14 @@ end
 RSpec.describe Ladon::Watir::BrowserAutomation do
   describe '#setup' do
     let(:automation) do
-      auto = ExampleBrowserAutomation.new(config)
+      auto = ExampleBrowserAutomation.new(config: config)
       auto.instance_variable_set(:@browser, FakeWatirBrowser.new)
 
       return auto
     end
 
     context 'called with default config' do
-      let(:config) { Ladon::Automator::Config.new }
+      let(:config) { Ladon::Config.new }
 
       subject { automation }
 
@@ -78,11 +78,11 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
 
     context 'called with custom config' do
       let(:config) do
-        Ladon::Automator::Config.new(flags: {
-                                       width: 100,
-                                       height: 100,
-                                       ui_url: 'http://zombo.com'
-                                     })
+        Ladon::Config.new(flags: {
+                            width: 100,
+                            height: 100,
+                            ui_url: 'http://zombo.com'
+                          })
       end
 
       subject { automation }
@@ -102,10 +102,10 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
   end
 
   describe '#screenshot' do
-    let(:config) { Ladon::Automator::Config.new(log_level: :WARN) }
+    let(:config) { Ladon::Config.new(log_level: :WARN) }
 
     let(:automation) do
-      auto = ExampleBrowserAutomation.new(config)
+      auto = ExampleBrowserAutomation.new(config: config)
 
       allow(auto).to receive(:build_browser) { FakeWatirBrowser.new }
       auto.build_model
@@ -177,7 +177,7 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
         automation.run
       end
 
-      it { is_expected.to be_an_instance_of(Ladon::Automator::Result) }
+      it { is_expected.to be_an_instance_of(Ladon::Result) }
 
       it 'should have a successful run' do
         expect(subject).to be_a_success

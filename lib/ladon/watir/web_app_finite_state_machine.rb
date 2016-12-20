@@ -14,9 +14,9 @@ module Ladon
       #   configuration for this new Graph model.
       #
       # @return [FiniteStateMachine] The new graph instance.
-      def initialize(browser, config = Ladon::Modeler::Config.new)
+      def initialize(browser, config = Ladon::Config.new)
         @browser = browser
-        super(config)
+        super(config: config)
       end
 
       # Determine if the given +state_class+ is a valid state type.
