@@ -42,11 +42,11 @@ module Ladon
       # For now, we're using the setup-execute-teardown pattern.
       def self.phases
         super + [
-            Ladon::Automator::Phase.new(:setup, required: true),
-            Ladon::Automator::Phase.new(:execute,
-                                        required: true,
-                                        validator: -> automation { automation.result.success? }),
-            Ladon::Automator::Phase.new(:teardown, required: true),
+          Ladon::Automator::Phase.new(:setup, required: true),
+          Ladon::Automator::Phase.new(:execute,
+                                      required: true,
+                                      validator: ->(a) { a.result.success? }),
+          Ladon::Automator::Phase.new(:teardown, required: true)
         ]
       end
 
