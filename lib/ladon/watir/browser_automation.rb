@@ -39,6 +39,17 @@ module Ladon
                   end }
       }.freeze
 
+      # For now, we're using the setup-execute-teardown pattern.
+      def self.phases
+        super + [
+          Ladon::Automator::Phase.new(:setup, required: true),
+          Ladon::Automator::Phase.new(:execute,
+                                      required: true,
+                                      validator: ->(a) { a.result.success? }),
+          Ladon::Automator::Phase.new(:teardown, required: true)
+        ]
+      end
+
       # Mapping of supported browser configuration flag names to a hash of
       # metadata about those flags.
       #
