@@ -1,6 +1,12 @@
 AllCops:
   TargetRubyVersion: 2.1
 
+# Short methods and blocks are generally good. This rule is less useful for
+# declarative blocks.
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
 # Let's optimize for readability.
 Style/RedundantReturn:
   Enabled: false
