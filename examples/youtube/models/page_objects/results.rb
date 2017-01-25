@@ -4,14 +4,9 @@ require 'ladon/watir'
 class YouTubeResultsPage < Ladon::Watir::PageObjectState
   div(:results, id: 'results')
 
-  def self.transitions
-    [
-      Ladon::Modeler::Transition.new do |t|
-        t.target_loader { require 'models/page_objects/watch' }
-        t.target_identifier { YouTubeWatchPage }
-        t.by(&:select_result)
-      end
-    ]
+  transition 'YouTubeWatchPage' do |t|
+    t.target_loader { require 'models/page_objects/watch' }
+    t.by(&:select_result)
   end
 
   def find_result(title:)

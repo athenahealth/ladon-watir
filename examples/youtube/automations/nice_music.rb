@@ -17,10 +17,6 @@ class NiceMusicAutomation < Ladon::Watir::BrowserAutomation
     :windows
   end
 
-  def self.abstract?
-    false
-  end
-
   def build_model
     super
 

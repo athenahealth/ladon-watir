@@ -6,15 +6,10 @@ class YouTubeIndexPage < Ladon::Watir::PageObjectState
   text_field(:search, id: 'masthead-search-term')
   button(:submit_search, id: 'search-btn')
 
-  def self.transitions
-    [
-      Ladon::Modeler::Transition.new do |t|
-        t.target_loader { require 'models/page_objects/results' }
-        t.target_identifier { YouTubeResultsPage }
-        t.when { |page| !page.search.empty? }
-        t.by(&:execute_search)
-      end
-    ]
+  transition 'YouTubeResultsPage' do |t|
+    t.target_loader { require 'models/page_objects/results' }
+    t.when { |page| !page.search.empty? }
+    t.by(&:execute_search)
   end
 
   def enter_search(term:)

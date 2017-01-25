@@ -35,18 +35,6 @@ module Ladon
         instance_model_html(singleton_class)
       end
 
-      # Class-level method defining the transitions that are available from a
-      # given page object state type.
-      #
-      # @return [Enumerable<Ladon::Modeler::Transition>] List-like object
-      # containing Transition instances that are valid from instances of this
-      # PageObjectState type. By default, this will return an empty list.
-      # Subclasses that do not represent terminal states should override this
-      # method.
-      def self.transitions
-        []
-      end
-
       # Defines HTML modeling methods that may vary per-instance of this class.
       #
       # @param [Class] The class the model will be effected upon.
