@@ -7,7 +7,7 @@
 ## Installation
 
 1. Install Ruby 2.1+.
-2. Run `gem install -s http://rubygems.athenahealth.com ladon-watir`.
+2. Run `gem install -s http://rubygems.athenahealth.com ladon-watir --prerelease -v "1.0.0.rc.4"`.
 
 ## Support
 
