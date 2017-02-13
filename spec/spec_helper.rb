@@ -23,5 +23,6 @@ end
 
 class FakeWatirWindow < Watir::Window
   def initialize; end
+
   def move_to(x, y); end
 end
