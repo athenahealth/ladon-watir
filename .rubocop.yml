@@ -7,6 +7,10 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
 
+# Antiquated line length settings overridden
+Metrics/LineLength:
+  Max: 120
+
 # Let's optimize for readability.
 Style/RedundantReturn:
   Enabled: false

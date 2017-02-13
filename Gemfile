@@ -13,7 +13,7 @@ source 'https://rubygems.org' do
 end
 
 source 'http://rubygems.athenahealth.com' do
-  gem 'ladon', '1.0.0.rc.3'
+  gem 'ladon', '1.0.0.rc.4'
 end
 
 gem 'ladon-watir', path: '.'

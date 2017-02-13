@@ -15,4 +15,14 @@ class FakeWatirBrowser < Watir::Browser
   def goto(_url); end
 
   def quit; end
+
+  def window
+    FakeWatirWindow.new
+  end
+end
+
+class FakeWatirWindow < Watir::Window
+  def initialize; end
+
+  def move_to(x, y); end
 end
