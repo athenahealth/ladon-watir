@@ -6,7 +6,7 @@ class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
   # Assertion message for header verification
   HEADER_MSG = 'Header must say "Example Domain"'.freeze
 
-  def self.default_url
+  def self.default_ui_url
     'http://example.com'
   end
 
