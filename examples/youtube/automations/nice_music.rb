@@ -5,16 +5,8 @@ require 'models/page_objects/index'
 # Run this automation if you want to listen to nice music.
 # `ladon-run -a ./nice_music.rb -s NiceMusicAutomation`
 class NiceMusicAutomation < Ladon::Watir::BrowserAutomation
-  def self.default_url
+  def self.default_ui_url
     'http://youtube.com'
-  end
-
-  def default_browser
-    :chrome
-  end
-
-  def default_platform
-    :windows
   end
 
   def build_model

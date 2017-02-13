@@ -15,29 +15,42 @@ module Ladon
       attr_reader :browser
       attr_reader :screenshots
 
-      NO_GRID_DEFAULT = :NONE
-      FULL_SCREEN_SIZE = :FULL
+      FULL_SCREEN_SIZE = :FULL # Constant value signifying that browser width or height should be maximized.
 
-      PLATFORM_FLAG = :platform
-      BROWSER_FLAG = :browser
-      GRID_FLAG = :grid_url
+      # Flag pertaining to browser width.
+      WIDTH_FLAG = make_flag(:width, default: FULL_SCREEN_SIZE) { |width| self.browser_width = width }
 
-      BROWSER_SETUP_FLAGS = {
-        width: { default: FULL_SCREEN_SIZE,
-                 handler: lambda do |automation, flag_value|
-                   automation.browser_width = flag_value
-                 end },
+      # Flag pertaining to browser height.
+      HEIGHT_FLAG = make_flag(:height, default: FULL_SCREEN_SIZE) { |height| self.browser_height = height }
 
-        height: { default: FULL_SCREEN_SIZE,
-                  handler: lambda do |automation, flag_value|
-                    automation.browser_height = flag_value
-                  end },
+      # Flag pertaining to the URL to which the browser should initially navigate.
+      UI_URL_FLAG = make_flag(:ui_url, default: 'about:blank', class_override: true) { |url| browser.goto(url.to_s) }
 
-        ui_url: { default: ->(automation) { automation.class.default_url },
-                  handler: lambda do |automation, flag_value|
-                    automation.browser.goto(flag_value)
-                  end }
-      }.freeze
+      # Flag identifying the type of browser to use.
+      BROWSER_FLAG = make_flag(:browser, default: :chrome) do |browser_type|
+        @browser_type = browser_type.to_sym
+        halting_assert('Browser requested must be valid') do
+          [:chrome, :firefox, :safari, :ie].include?(@browser_type)
+        end
+      end
+
+      # Flag identifying the desired OS platform for the browser (only applicable when using Selenium Grid.)
+      PLATFORM_FLAG = make_flag(:platform, default: :any) do |platform|
+        @platform = platform.to_sym
+        halting_assert('Browser platform requested must be valid') do
+          [:any, :windows, :mac, :linux].include?(@platform)
+        end
+      end
+
+      # Flag for specifying a Selenium Grid browser session request URL.
+      GRID_URL_FLAG = make_flag(:grid_url, default: nil) do |url|
+        unless url.nil?
+          @grid_url = url.to_s
+          halting_assert('Grid URL given must look like a Selenium Grid registration URL') do
+            @grid_url.end_with?('/wd/hub')
+          end
+        end
+      end
 
       # For now, we're using the setup-execute-teardown pattern.
       def self.phases
@@ -48,35 +61,6 @@ module Ladon
                                       validator: ->(a) { a.result.success? }),
           Ladon::Automator::Phase.new(:teardown, required: true)
         ]
-      end
-
-      # Mapping of supported browser configuration flag names to a hash of
-      # metadata about those flags.
-      #
-      # The +setup+ method processes these flags in the order they appear
-      # (Ruby 1.9+), defaulting to the metadata's +:default+ value. The :default
-      # may optionally be specified as a proc taking the current +automation+
-      # instance. This proc should return the desired default value.
-      #
-      # @return [Hash] Map of flag names to hash of metadata (default value,
-      #   flag handler.)
-      def self.browser_setup_flags
-        BROWSER_SETUP_FLAGS
-      end
-
-      # Defining the URL to which the browser should be pointed.
-      # Subclasses can override this to customize their defaults.
-      #
-      # @return [String] *MUST* return a String (which should be a URL.)
-      def self.default_url
-        'about:blank'
-      end
-
-      # Default OS platform that remote browser will be run on.
-      #
-      # @return [Symbol] Default platform for browser environment.
-      def default_platform
-        :any
       end
 
       # Builds the +Ladon::Watir::WebAppFiniteStateMachine+ that will represent
@@ -95,35 +79,23 @@ module Ladon
       # to this automation, supports spawning the browser either locally or via
       # any standard Selenium Grid instance.
       def build_browser
-        browser_type = flags.get(BROWSER_FLAG, default_to: default_browser)
-                            .to_sym
+        self.handle_flag(BROWSER_FLAG)
+        self.handle_flag(GRID_URL_FLAG)
 
-        grid_url = flags.get(GRID_FLAG, default_to: NO_GRID_DEFAULT)
+        return local_browser if @grid_url.nil?
 
-        return local_browser(type: browser_type) if grid_url == NO_GRID_DEFAULT
-
-        platform = flags.get(PLATFORM_FLAG, default_to: default_platform).to_sym
-
-        return remote_browser(url: grid_url,
-                              type: browser_type,
-                              platform: platform)
+        self.handle_flag(PLATFORM_FLAG)
+        return remote_browser
       end
 
       # The first phase of the automation.
       # Processes the class' defined browser setup flags, configuring the
       # browser appropriately.
       def setup
-        self.class.browser_setup_flags.each do |flag, metadata|
-          default_val = metadata[:default]
-
-          # "default" can be a proc consuming this automation instance,
-          # returning the default value
-          default_val = default_val.call(self) if default_val.is_a?(Proc)
-
-          # get the flag and fire the callback
-          flag_val = flags.get(flag, default_to: default_val)
-          metadata[:handler].call(self, flag_val)
-        end
+        self.handle_flag(HEIGHT_FLAG)
+        self.handle_flag(WIDTH_FLAG)
+        @browser.window.move_to(0, 0)
+        self.handle_flag(UI_URL_FLAG)
       end
 
       # The last phase of the automation. Quits the browser.
@@ -141,7 +113,6 @@ module Ladon
       #   available width.
       def browser_width=(width)
         width = browser.screen_width if width == FULL_SCREEN_SIZE
-
         browser.window.resize_to(width.to_i, browser.window.size.height)
       end
 
@@ -153,7 +124,6 @@ module Ladon
       #   available height.
       def browser_height=(height)
         height = browser.screen_height if height == FULL_SCREEN_SIZE
-
         browser.window.resize_to(browser.window.size.width, height.to_i)
       end
 
@@ -178,28 +148,17 @@ module Ladon
       private
 
       # Constructs a browser to be driven locally.
-      #
-      # @param [Symbol, Selenium::WebDriver] type :firefox, :ie, :chrome,
-      #   :remote or Selenium::WebDriver instance. See
-      #   Watir::Browser#initialize's browser parameter.
-      #
       # @return [Ladon::Watir::Browser] The new browser object.
-      def local_browser(type:)
-        return Ladon::Watir::Browser.new_local(type: type)
+      def local_browser
+        return Ladon::Watir::Browser.new_local(type: @browser_type)
       end
 
       # Constructs a browser to be driven remotely on a grid.
-      #
-      # @param [Symbol, Selenium::WebDriver] type The browser type. See
-      #   Watir::Browser#initialize's browser parameter.
-      # @param [String] url The URL of the remote grid.
-      # @param [Symbol] platform The OS on which to host the browser.
-      #
       # @return [Ladon::Watir::Browser] The new browser object.
-      def remote_browser(url:, type:, platform:)
-        return Ladon::Watir::Browser.new_remote(url: url.to_s,
-                                                type: type,
-                                                platform: platform)
+      def remote_browser
+        return Ladon::Watir::Browser.new_remote(url: @grid_url,
+                                                type: @browser_type,
+                                                platform: @platform)
       end
     end
   end
