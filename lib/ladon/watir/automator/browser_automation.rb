@@ -1,6 +1,6 @@
 require 'ladon'
 require 'ladon/watir/browser'
-require 'ladon/watir/web_app_finite_state_machine'
+require 'ladon/watir/modeler/web_app_finite_state_machine'
 
 module Ladon
   module Watir

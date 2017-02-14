@@ -1,4 +1,4 @@
-require 'ladon/watir/page_object_state'
+require 'ladon/watir/modeler/page_object_state'
 
 class ExamplePageObjectState < Ladon::Watir::PageObjectState
   h1(:header)

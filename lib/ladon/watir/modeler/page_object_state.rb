@@ -37,7 +37,7 @@ module Ladon
 
       # Defines HTML modeling methods that may vary per-instance of this class.
       #
-      # @param [Class] The class the model will be effected upon.
+      # @param [Class] _target_class The class the model will be effected upon.
       #   When creating instances, this will be the +singleton_class+
       #   of the instance being created.
       #
