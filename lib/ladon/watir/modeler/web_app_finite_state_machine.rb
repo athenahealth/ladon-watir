@@ -1,5 +1,5 @@
 require 'ladon'
-require 'ladon/watir/page_object_state'
+require 'ladon/watir/modeler/page_object_state'
 
 module Ladon
   module Watir
