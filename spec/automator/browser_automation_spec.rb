@@ -1,6 +1,6 @@
 require 'rspec'
 require 'ladon'
-require 'ladon/watir/browser_automation'
+require 'ladon/watir/automator/browser_automation'
 
 class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
   # Assertion message for header verification
@@ -8,18 +8,6 @@ class ExampleBrowserAutomation < Ladon::Watir::BrowserAutomation
 
   def self.default_ui_url
     'http://example.com'
-  end
-
-  def default_browser
-    :chrome
-  end
-
-  def default_platform
-    :windows
-  end
-
-  def self.abstract?
-    false
   end
 
   def local_browser(*)
