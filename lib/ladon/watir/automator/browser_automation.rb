@@ -15,38 +15,71 @@ module Ladon
       attr_reader :browser
       attr_reader :screenshots
 
-      FULL_SCREEN_SIZE = :FULL # Constant value signifying that browser width or height should be maximized.
+      BROWSER_TYPES = [:chrome, :firefox, :safari, :ie].freeze
+      PLATFORMS = [:any, :windows, :mac, :linux].freeze
+
+      # Constant value signifying that browser width or height should be
+      # maximized.
+      FULL_SCREEN_SIZE = :FULL
 
       # Flag pertaining to browser width.
-      WIDTH_FLAG = make_flag(:width, default: FULL_SCREEN_SIZE) { |width| self.browser_width = width }
+      WIDTH_FLAG = make_flag(
+        :width,
+        description: 'Desired browser width in pixels, or FULL for maximum.',
+        default: FULL_SCREEN_SIZE
+      ) { |width| self.browser_width = width }
 
       # Flag pertaining to browser height.
-      HEIGHT_FLAG = make_flag(:height, default: FULL_SCREEN_SIZE) { |height| self.browser_height = height }
+      HEIGHT_FLAG = make_flag(
+        :height,
+        description: 'Desired browser height in pixels, or FULL for maximum.',
+        default: FULL_SCREEN_SIZE
+      ) { |height| self.browser_height = height }
 
-      # Flag pertaining to the URL to which the browser should initially navigate.
-      UI_URL_FLAG = make_flag(:ui_url, default: 'about:blank', class_override: true) { |url| browser.goto(url.to_s) }
+      # Flag pertaining to the URL to which the browser should initially
+      # navigate.
+      UI_URL_FLAG = make_flag(
+        :ui_url,
+        description: 'URL to which the browser should initially navigate.',
+        default: 'about:blank',
+        class_override: true
+      ) { |url| browser.goto(url.to_s) }
 
       # Flag identifying the type of browser to use.
-      BROWSER_FLAG = make_flag(:browser, default: :chrome) do |browser_type|
+      BROWSER_FLAG = make_flag(
+        :browser,
+        description: %{Desired browser type (#{BROWSER_TYPES.join(', ')}).},
+        default: :chrome
+      ) do |browser_type|
         @browser_type = browser_type.to_sym
         halting_assert('Browser requested must be valid') do
-          [:chrome, :firefox, :safari, :ie].include?(@browser_type)
+          BROWSER_TYPES.include?(@browser_type)
         end
       end
 
-      # Flag identifying the desired OS platform for the browser (only applicable when using Selenium Grid.)
-      PLATFORM_FLAG = make_flag(:platform, default: :any) do |platform|
+      # Flag identifying the desired OS platform for the browser (only
+      # applicable when using Selenium Grid).
+      PLATFORM_FLAG = make_flag(
+        :platform,
+        description: %{Desired platform (#{PLATFORMS.join(', ')}).},
+        default: :any
+      ) do |platform|
         @platform = platform.to_sym
         halting_assert('Browser platform requested must be valid') do
-          [:any, :windows, :mac, :linux].include?(@platform)
+          PLATFORMS.include?(@platform)
         end
       end
 
       # Flag for specifying a Selenium Grid browser session request URL.
-      GRID_URL_FLAG = make_flag(:grid_url, default: nil) do |url|
+      GRID_URL_FLAG = make_flag(
+        :grid_url,
+        description: 'Selenium Grid URL, if running remotely.',
+        default: nil
+      ) do |url|
         unless url.nil?
           @grid_url = url.to_s
-          halting_assert('Grid URL given must look like a Selenium Grid registration URL') do
+          halting_assert('Grid URL given must look like a Selenium Grid '\
+                         'registration URL') do
             @grid_url.end_with?('/wd/hub')
           end
         end

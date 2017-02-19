@@ -11,6 +11,11 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Max: 120
 
+# Small classes are good, but even SOLID classes can easily go over the default
+# 100 lines.
+Metrics/ClassLength:
+  Max: 200
+
 # Let's optimize for readability.
 Style/RedundantReturn:
   Enabled: false
