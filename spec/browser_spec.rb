@@ -33,7 +33,8 @@ RSpec.describe Ladon::Watir::Browser do
         'Selenium::WebDriver::Remote::Http::Default'
       )
 
-      expect(fake_remote_http_default).to receive(:timeout=).with(1200)
+      expect(fake_remote_http_default).to receive(:open_timeout=).with(1200)
+      expect(fake_remote_http_default).to receive(:read_timeout=).with(1200)
 
       remote_http_default = class_double(
         'Selenium::WebDriver::Remote::Http::Default'
