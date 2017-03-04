@@ -24,7 +24,8 @@ module Ladon
 
         # Increase timeout to 20 minutes to allow queued tests to process when
         # grid resources free up.
-        @client.timeout = 60 * 20 # seconds.
+        @client.open_timeout = 60 * 20 # seconds.
+        @client.read_timeout = 60 * 20 # seconds.
 
         return self.new(:remote,
                         url: url.to_s,
