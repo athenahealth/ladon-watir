@@ -1,6 +1,8 @@
 require 'ladon'
 require 'ladon/watir/browser'
 require 'ladon/watir/modeler/web_app_finite_state_machine'
+require 'page-object'
+require 'watir'
 
 module Ladon
   module Watir
@@ -85,6 +87,18 @@ module Ladon
         end
       end
 
+      # Flag for specifying the timeouts when locating elements in the DOM.
+      TIMEOUT_FLAG = make_flag(
+        :timeout,
+        description: 'Timeout duration (in seconds) for browser activity',
+        default: 20
+      ) do |timeout|
+        @timeout = timeout.to_i
+        ::PageObject.default_page_wait = @timeout
+        ::PageObject.default_element_wait = @timeout
+        ::Watir.default_timeout = @timeout
+      end
+
       # For now, we're using the setup-execute-teardown pattern.
       def self.phases
         super + [
@@ -114,6 +128,7 @@ module Ladon
       def build_browser
         self.handle_flag(BROWSER_FLAG)
         self.handle_flag(GRID_URL_FLAG)
+        self.handle_flag(TIMEOUT_FLAG)
 
         return local_browser if @grid_url.nil?
 
