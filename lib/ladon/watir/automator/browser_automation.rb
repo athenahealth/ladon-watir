@@ -227,6 +227,37 @@ module Ladon
                                                 type: @browser_type,
                                                 platform: @platform)
       end
+
+      # Loads the url passed in a new browser tab. In the test script, it is mandatory to change
+      # the @page to the current page loaded (Ex: "@page = @browser.current_page_as(LoginPage, @test_run)"
+      # if you have loaded the athenanet login page), otherwise it will point to the
+      # previous tab's page even after moving to the new tab.
+      #
+      # * Arguments:
+      #   - +url+:: url to be loaded in the new browser tab.
+      def load_browser_tab(url:)
+        @browser.execute_script('window.open()')
+        @browser.windows.last.use
+        @browser.goto(url)
+      end
+
+      # Switches to the desired browser tab based on the tab position passed. In the
+      # test script, it is mandatory to change the @page to the current page loaded in the switched tab,
+      # otherwise it will point to the previous tab's page after moving to the new tab.
+      # * Arguments:
+      #   - +position+:: the tab position to be switched.
+      def switch_browser_tab(position:)
+        @browser.windows[position - 1].use
+        @browser.execute_script('window.alert()')
+        @browser.alert.close if @browser.alert.present?
+      end
+
+      # Closes the browser tab based on the tab position passed.
+      # * Arguments:
+      #   - +position+:: the tab position to be closed.
+      def close_browser_tab(position:)
+        @browser.windows[position - 1].close
+      end
     end
   end
 end
