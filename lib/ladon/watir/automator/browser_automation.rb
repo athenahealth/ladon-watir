@@ -47,6 +47,24 @@ module Ladon
         class_override: true
       ) { |url| browser.goto(url.to_s) }
 
+      # Flag pertaining to the secondary URL that has to be loaded
+      SECONDARY_URL_FLAG = make_flag(
+        :secondary_url,
+        description: 'Secondary URL to which the browser should navigate.',
+        default: 'about:blank',
+        class_override: true
+      ) do |url|
+        unless url.nil?
+          # Just a basic check to confirm it is a URL,
+          # more specific checks will be added in future
+          url = url.to_s
+          halting_assert('Secondary URL given does not look '\
+                         'like a  URL') do
+            url.start_with?('http')
+          end
+        end
+      end
+
       # Flag identifying the type of browser to use.
       BROWSER_FLAG = make_flag(
         :browser,
@@ -144,6 +162,7 @@ module Ladon
         self.handle_flag(WIDTH_FLAG)
         @browser.window.move_to(0, 0)
         self.handle_flag(UI_URL_FLAG)
+        self.handle_flag(SECONDARY_URL_FLAG)
       end
 
       # The last phase of the automation. Quits the browser.
