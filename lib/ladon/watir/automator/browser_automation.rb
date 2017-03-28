@@ -17,8 +17,8 @@ module Ladon
       attr_reader :browser
       attr_reader :screenshots
 
-      BROWSER_TYPES = [:chrome, :firefox, :safari, :ie].freeze
-      PLATFORMS = [:any, :windows, :mac, :linux].freeze
+      BROWSER_TYPES = %i(chrome firefox safari ie).freeze
+      PLATFORMS = %i(any windows mac linux).freeze
 
       # Constant value signifying that browser width or height should be
       # maximized.
@@ -147,6 +147,7 @@ module Ladon
         self.handle_flag(BROWSER_FLAG)
         self.handle_flag(GRID_URL_FLAG)
         self.handle_flag(TIMEOUT_FLAG)
+        self.handle_flag(SECONDARY_URL_FLAG)
 
         return local_browser if @grid_url.nil?
 
@@ -162,7 +163,6 @@ module Ladon
         self.handle_flag(WIDTH_FLAG)
         @browser.window.move_to(0, 0)
         self.handle_flag(UI_URL_FLAG)
-        self.handle_flag(SECONDARY_URL_FLAG)
       end
 
       # The last phase of the automation. Quits the browser.
