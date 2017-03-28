@@ -51,8 +51,7 @@ module Ladon
       SECONDARY_URL_FLAG = make_flag(
         :secondary_url,
         description: 'Secondary URL to which the browser should navigate.',
-        default: 'about:blank',
-        class_override: true
+        default: nil
       ) do |url|
         unless url.nil?
           # Just a basic check to confirm it is a URL,
