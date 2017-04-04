@@ -47,23 +47,6 @@ module Ladon
         class_override: true
       ) { |url| browser.goto(url.to_s) }
 
-      # Flag pertaining to the secondary URL that has to be loaded
-      SECONDARY_URL_FLAG = make_flag(
-        :secondary_url,
-        description: 'Secondary URL to which the browser should navigate.',
-        default: nil
-      ) do |url|
-        unless url.nil?
-          # Just a basic check to confirm it is a URL,
-          # more specific checks will be added in future
-          url = url.to_s
-          halting_assert('Secondary URL given does not look '\
-                         'like a  URL') do
-            url.start_with?('http')
-          end
-        end
-      end
-
       # Flag identifying the type of browser to use.
       BROWSER_FLAG = make_flag(
         :browser,
@@ -146,7 +129,6 @@ module Ladon
         self.handle_flag(BROWSER_FLAG)
         self.handle_flag(GRID_URL_FLAG)
         self.handle_flag(TIMEOUT_FLAG)
-        self.handle_flag(SECONDARY_URL_FLAG)
 
         return local_browser if @grid_url.nil?
 
@@ -227,24 +209,19 @@ module Ladon
                                                 platform: @platform)
       end
 
-      # Loads the url passed in a new browser tab. In the test script, it is mandatory to change
-      # the @page to the current page loaded (Ex: "@page = @browser.current_page_as(LoginPage, @test_run)"
-      # if you have loaded the athenanet login page), otherwise it will point to the
-      # previous tab's page even after moving to the new tab.
+      # Loads the url passed in a new browser tab.
       #
-      # * Arguments:
-      #   - +url+:: url to be loaded in the new browser tab.
+      # @param [String] url The url to be loaded in the new browser
+      #   tab.
       def load_browser_tab(url:)
         @browser.execute_script('window.open()')
         @browser.windows.last.use
         @browser.goto(url)
       end
 
-      # Switches to the desired browser tab based on the tab position passed. In the
-      # test script, it is mandatory to change the @page to the current page loaded in the switched tab,
-      # otherwise it will point to the previous tab's page after moving to the new tab.
-      # * Arguments:
-      #   - +position+:: the tab position to be switched.
+      # Switches to the desired browser tab based on the tab position passed.
+      #
+      # @param [Integer] position The tab position to be switched.
       def switch_browser_tab(position:)
         @browser.windows[position - 1].use
         @browser.execute_script('window.alert()')
@@ -252,8 +229,8 @@ module Ladon
       end
 
       # Closes the browser tab based on the tab position passed.
-      # * Arguments:
-      #   - +position+:: the tab position to be closed.
+      #
+      # @param [Integer] position The tab position to be closed.
       def close_browser_tab(position:)
         @browser.windows[position - 1].close
       end
