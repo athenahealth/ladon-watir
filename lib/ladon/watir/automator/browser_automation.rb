@@ -17,8 +17,8 @@ module Ladon
       attr_reader :browser
       attr_reader :screenshots
 
-      BROWSER_TYPES = [:chrome, :firefox, :safari, :ie].freeze
-      PLATFORMS = [:any, :windows, :mac, :linux].freeze
+      BROWSER_TYPES = %i[chrome firefox safari ie].freeze
+      PLATFORMS = %i[any windows mac linux].freeze
 
       # Constant value signifying that browser width or height should be
       # maximized.
@@ -207,6 +207,32 @@ module Ladon
         return Ladon::Watir::Browser.new_remote(url: @grid_url,
                                                 type: @browser_type,
                                                 platform: @platform)
+      end
+
+      # Loads the url passed in a new browser tab.
+      #
+      # @param [String] url The url to be loaded in the new browser
+      #   tab.
+      def load_browser_tab(url:)
+        @browser.execute_script('window.open()')
+        @browser.windows.last.use
+        @browser.goto(url)
+      end
+
+      # Switches to the desired browser tab based on the tab position passed.
+      #
+      # @param [Integer] position The tab position to be switched.
+      def switch_browser_tab(position:)
+        @browser.windows[position - 1].use
+        @browser.execute_script('window.alert()')
+        @browser.alert.close if @browser.alert.present?
+      end
+
+      # Closes the browser tab based on the tab position passed.
+      #
+      # @param [Integer] position The tab position to be closed.
+      def close_browser_tab(position:)
+        @browser.windows[position - 1].close
       end
     end
   end
