@@ -18,8 +18,8 @@ module Ladon
       attr_reader :browser
       attr_reader :screenshots
 
-      BROWSER_TYPES = [:chrome, :firefox, :safari, :ie].freeze
-      PLATFORMS = [:any, :windows, :mac, :linux].freeze
+      BROWSER_TYPES = %i(chrome firefox safari ie).freeze
+      PLATFORMS = %i(any windows mac linux).freeze
 
       # Constant value signifying that browser width or height should be
       # maximized.
