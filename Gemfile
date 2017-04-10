@@ -9,8 +9,8 @@ source 'https://rubygems.org' do
   gem 'rubocop'
   gem 'rubygems-tasks'
   gem 'simplecov', require: false, group: :test
-  gem 'watir', '~> 6.0'
   gem 'useragent'
+  gem 'watir', '~> 6.0'
 end
 
 source 'http://rubygems.athenahealth.com' do

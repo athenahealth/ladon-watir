@@ -16,6 +16,12 @@ class FakeWatirBrowser < Watir::Browser
 
   def quit; end
 
+  def screen_width; end
+
+  def screen_height; end
+
+  def execute_script(_js); end
+
   def window
     FakeWatirWindow.new
   end
