@@ -2,8 +2,8 @@ require 'ladon'
 require 'ladon/watir/browser'
 require 'ladon/watir/modeler/web_app_finite_state_machine'
 require 'page-object'
-require 'watir'
 require 'useragent'
+require 'watir'
 
 module Ladon
   module Watir
