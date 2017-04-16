@@ -19,6 +19,8 @@ module Ladon
 
       BROWSER_TYPES = %i[chrome firefox safari ie].freeze
       PLATFORMS = %i[any windows mac linux].freeze
+      NA_STRING = 'N/A'.freeze
+      GRID_REG_REL_PATH = '/wd/hub'.freeze # grid hub URL fragment
 
       # Constant value signifying that browser width or height should be
       # maximized.
@@ -151,6 +153,7 @@ module Ladon
         @browser.quit
 
         self.result.record_data('screenshots', @screenshots)
+        self.result.record_data('proxy_details', proxy_details)
       end
 
       # Resize the browser's width to the given value.
@@ -233,6 +236,54 @@ module Ladon
       # @param [Integer] position The tab position to be closed.
       def close_browser_tab(position:)
         @browser.windows[position - 1].close
+      end
+
+      # Get the "remote" node proxy details for this test run.
+      #
+      # @return [Hash] Hash of info for the remote proxy node used for this test run.
+      def proxy_details
+        unless @grid_url.nil?
+          grid_base_url = @grid_url.split(GRID_REG_REL_PATH)[0] # grid hostname:port
+          @session_id = grid_session_id # get the test's session id
+          @proxy_url = get_grid_proxy_url(grid_base_url, @session_id)
+          @proxy_details = get_grid_proxy_details(grid_base_url, @proxy_url)
+          return @proxy_details['request']['configuration']
+        end
+        return NA_STRING
+      end
+
+      # Get the unique "Session ID" for the browser's driver on the selenium grid.
+      #
+      # @return [String] The sessionID associated with the Grid-based remote
+      # webdriver browser.
+      def grid_session_id
+        @browser.driver.capabilities['webdriver.remote.sessionid']
+      end
+
+      # Get the "proxyId" of the remote grid node hosting our @browser driver.
+      #
+      # @param [String] grid_base The base URL for the Selenium Grid location.
+      # @param [String] session_id Session ID of the remote browser.
+      #
+      # @return [String] The "proxyId" of the test session on the Selenium Grid.
+      def get_grid_proxy_url(grid_base, session_id)
+        url = URI.parse("#{grid_base}/grid/api/testsession?session=#{session_id}")
+        req = Net::HTTP::Get.new(url.to_s)
+        res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+        JSON.parse(res.body)['proxyId']
+      end
+
+      # Get the details of the grid proxy node hosting our @browser driver.
+      #
+      # @param [String] grid_base The base URL for the Selenium Grid location.
+      # @param [String] proxy_id The proxy ID of the remote browser.
+      #
+      # @return [Hash] Hash of data identifying the Grid Node providing the remote browser.
+      def get_grid_proxy_details(grid_base, proxy_id)
+        url = URI.parse("#{grid_base}/grid/api/proxy?id=#{proxy_id}")
+        req = Net::HTTP::Get.new(url.to_s)
+        res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+        JSON.parse(res.body)
       end
     end
   end
