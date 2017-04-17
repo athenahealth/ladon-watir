@@ -172,4 +172,26 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
       end
     end
   end
+
+  describe '#browser_info' do
+    let(:config) { Ladon::Config.new(log_level: :WARN) }
+
+    let(:automation) do
+      auto = ExampleBrowserAutomation.new(config: config)
+
+      allow(auto).to receive(:build_browser) { FakeWatirBrowser.new }
+      auto.build_model
+
+      return auto
+    end
+
+    it 'Should parse the UserAgent string in browser_info method' do
+      automation.browser_info
+      automation.teardown
+
+      expect(automation.result.data_log['platform'][:browser_name]).to eq(automation.browser_name)
+      expect(automation.result.data_log['platform'][:os_platform]).to eq(automation.os_platform)
+      expect(automation.result.data_log['platform'][:browser_version]).to eq(automation.browser_version)
+    end
+  end
 end
