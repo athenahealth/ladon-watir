@@ -152,17 +152,19 @@ module Ladon
 
       # The last phase of the automation. Logs the result and Quits the browser.
       def teardown
-        # Logging useful data to 'data-log' in results file
+        log_useful_data
+        @browser.quit
+        self.result.record_data('screenshots', @screenshots)
+      end
+
+      # Logging useful data to 'data-log' in results file
+      def log_useful_data
         self.result.record_data('screen_size', "#{browser.screen_width} X #{browser.screen_height}")
+        self.result.record_data('proxy_details', proxy_details)
         browser_info # Fetching the UserAgent data
         self.result.record_data('platform', browser_name: browser_name,
                                             browser_version: browser_version,
                                             os_platform: os_platform)
-
-        @browser.quit
-
-        self.result.record_data('screenshots', @screenshots)
-        self.result.record_data('proxy_details', proxy_details)
       end
 
       # Resize the browser's width to the given value.
