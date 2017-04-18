@@ -9,6 +9,7 @@ source 'https://rubygems.org' do
   gem 'rubocop'
   gem 'rubygems-tasks'
   gem 'simplecov', require: false, group: :test
+  gem 'useragent'
   gem 'watir', '~> 6.0'
 end
 

@@ -2,6 +2,7 @@ require 'ladon'
 require 'ladon/watir/browser'
 require 'ladon/watir/modeler/web_app_finite_state_machine'
 require 'page-object'
+require 'useragent'
 require 'watir'
 
 module Ladon
@@ -119,6 +120,7 @@ module Ladon
       def build_model
         @browser = self.build_browser
         @screenshots = {}
+        @parsed_ua = {}
         self.model = Ladon::Watir::WebAppFiniteStateMachine.new(@browser)
       end
 
@@ -146,8 +148,15 @@ module Ladon
         self.handle_flag(UI_URL_FLAG)
       end
 
-      # The last phase of the automation. Quits the browser.
+      # The last phase of the automation. Logs the result and Quits the browser.
       def teardown
+        # Logging useful data to 'data-log' in results file
+        self.result.record_data('screen_size', "#{browser.screen_width} X #{browser.screen_height}")
+        browser_info # Fetching the UserAgent data
+        self.result.record_data('platform', browser_name: browser_name,
+                                            browser_version: browser_version,
+                                            os_platform: os_platform)
+
         @browser.quit
 
         self.result.record_data('screenshots', @screenshots)
@@ -191,6 +200,34 @@ module Ladon
           @logger.warn("Unable to take screenshot '#{name}' due to an error "\
                        "(#{ex.class}: #{ex})")
         end
+      end
+
+      # Ask the browser for the name
+      #
+      # @return [String] The browser name.
+      def browser_name
+        return @parsed_ua.browser ? @parsed_ua.browser : 'Unknown'
+      end
+
+      # Ask the browser for the version
+      #
+      # @return [String] The browser version.
+      def browser_version
+        return @parsed_ua.version ? @parsed_ua.version : 'Unknown'
+      end
+
+      # Ask the browser for the OS platform
+      #
+      # @return [String] The OS platform.
+      def os_platform
+        return @parsed_ua.os ? @parsed_ua.os : 'Unknown'
+      end
+
+      # Renders the Browser details from UserAgent string
+      def browser_info
+        # Fetch the UserAgent string using javascript navigator object
+        ua_string = browser.execute_script('return navigator.userAgent')
+        @parsed_ua = UserAgent.parse(ua_string)
       end
 
       private
