@@ -194,4 +194,23 @@ RSpec.describe Ladon::Watir::BrowserAutomation do
       expect(automation.result.data_log['platform'][:browser_version]).to eq(automation.browser_version)
     end
   end
+
+  describe '#proxy_details' do
+    let(:config) { Ladon::Config.new(log_level: :WARN) }
+
+    let(:automation) do
+      auto = ExampleBrowserAutomation.new(config: config)
+
+      allow(auto).to receive(:build_browser) { FakeWatirBrowser.new }
+      auto.build_model
+
+      return auto
+    end
+
+    it 'Should log the grid proxy details in the output file' do
+      automation.teardown
+
+      expect(automation.result.data_log['proxy_details']).to eq('N/A')
+    end
+  end
 end
