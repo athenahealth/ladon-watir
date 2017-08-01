@@ -25,3 +25,6 @@ Style/RedundantBegin:
 
 Style/RedundantSelf:
   Enabled: false
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
