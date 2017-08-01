@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'ladon-watir'
-  s.version     = '1.0.0.rc.5'
-  s.date        = '2016-11-08'
+  s.version     = '1.0.0.rc.6'
+  s.date        = '2017-08-01'
   s.summary     = 'Ladon Watir'
   s.description = <<-EOF
     Use Ladon and Watir to automate end-to-end web application workflows.
@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.1.0' # due to use of required keyword args
 
-  s.add_runtime_dependency 'ladon', '1.0.0.rc.5'
+  s.add_runtime_dependency 'ladon', '1.0.1'
   s.add_runtime_dependency 'watir', '~> 6.0'
   s.add_runtime_dependency 'page-object', '~> 2.0'
 
   s.add_development_dependency 'rake', '~> 11.3' # for convenient rake tasks
-  s.add_development_dependency 'rspec', '~> 3.5' # for specs
-  s.add_development_dependency 'rubocop', '~> 0.45' # for linting
+  s.add_development_dependency 'rspec', '~> 3.6' # for specs
+  s.add_development_dependency 'rubocop', '~> 0.49' # for linting
 end
