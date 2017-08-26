@@ -8,8 +8,8 @@ source 'https://rubygems.org' do
   gem 'rspec'
   gem 'rubocop'
   gem 'rubygems-tasks'
-  gem 'simplecov', require: false, group: :test
   gem 'selenium-webdriver', '3.4.0'
+  gem 'simplecov', require: false, group: :test
   gem 'useragent'
   gem 'watir', '6.5.0'
 end
