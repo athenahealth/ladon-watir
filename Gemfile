@@ -1,6 +1,6 @@
 source 'https://rubygems.org' do
   gem 'geminabox'
-  gem 'page-object', '~> 2.0'
+  gem 'page-object', '2.1.1'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
@@ -9,12 +9,13 @@ source 'https://rubygems.org' do
   gem 'rubocop'
   gem 'rubygems-tasks'
   gem 'simplecov', require: false, group: :test
+  gem 'selenium-webdriver', '3.4.0'
   gem 'useragent'
-  gem 'watir', '~> 6.0'
+  gem 'watir', '6.5.0'
 end
 
 source 'http://rubygems.athenahealth.com' do
-  gem 'ladon', '1.0.1'
+  gem 'ladon', '1.1.0'
 end
 
 gem 'ladon-watir', path: '.'
