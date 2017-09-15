@@ -201,7 +201,7 @@ module Ladon
       def screenshot(name)
         begin
           @screenshots[name] = @browser.screenshot.base64
-        rescue => ex
+        rescue Exception => ex
           @logger.warn("Unable to take screenshot '#{name}' due to an error "\
                        "(#{ex.class}: #{ex})")
         end
