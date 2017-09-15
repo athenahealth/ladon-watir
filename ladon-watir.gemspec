@@ -3,9 +3,9 @@ Gem::Specification.new do |s|
   s.version     = '1.0.0.rc.8'
   s.date        = '2017-09-15'
   s.summary     = 'Ladon Watir'
-  s.description = <<-EOF
+  s.description = <<-EOS
     Use Ladon and Watir to automate end-to-end web application workflows.
-  EOF
+  EOS
   s.authors     = ['Reagan Eggert', 'Kevin Weaver', 'Shayne Snow']
   s.email       = 'kweaver@athenahealth.com'
   s.files       = Dir['lib/**/*.rb']
