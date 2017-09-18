@@ -159,7 +159,7 @@ module Ladon
 
       # Logging useful data to 'data-log' in results file
       def log_useful_data
-        self.result.record_data('screen_size', "#{browser.screen_width} X #{browser.screen_height}")
+        self.result.record_data('screen_size', "#{@browser.screen_width} X #{@browser.screen_height}")
         self.result.record_data('proxy_details', proxy_details)
         browser_info # Fetching the UserAgent data
         self.result.record_data('platform', browser_name: browser_name,
@@ -174,8 +174,8 @@ module Ladon
       #   May be the constant value +FULL_SCREEN_SIZE+ to indicate to maximize
       #   available width.
       def browser_width=(width)
-        width = browser.screen_width if width == FULL_SCREEN_SIZE
-        browser.window.resize_to(width.to_i, browser.window.size.height)
+        width = @browser.screen_width if width == FULL_SCREEN_SIZE
+        @browser.window.resize_to(width.to_i, @browser.window.size.height)
       end
 
       # Resize the browser's height to the given value.
@@ -185,8 +185,8 @@ module Ladon
       #   May be the constant value +FULL_SCREEN_SIZE+ to indicate to maximize
       #   available height.
       def browser_height=(height)
-        height = browser.screen_height if height == FULL_SCREEN_SIZE
-        browser.window.resize_to(browser.window.size.width, height.to_i)
+        height = @browser.screen_height if height == FULL_SCREEN_SIZE
+        @browser.window.resize_to(@browser.window.size.width, height.to_i)
       end
 
       # Take a screenshot of the current appearance of the browser instance.
@@ -201,7 +201,7 @@ module Ladon
       def screenshot(name)
         begin
           @screenshots[name] = @browser.screenshot.base64
-        rescue => ex
+        rescue StandardError => ex
           @logger.warn("Unable to take screenshot '#{name}' due to an error "\
                        "(#{ex.class}: #{ex})")
         end

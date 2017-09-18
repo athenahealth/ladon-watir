@@ -1,11 +1,11 @@
 Gem::Specification.new do |s|
   s.name        = 'ladon-watir'
-  s.version     = '1.0.0.rc.7'
-  s.date        = '2017-08-25'
+  s.version     = '1.0.0.rc.8'
+  s.date        = '2017-09-15'
   s.summary     = 'Ladon Watir'
-  s.description = <<-EOF
+  s.description = <<-HEREDOC
     Use Ladon and Watir to automate end-to-end web application workflows.
-  EOF
+  HEREDOC
   s.authors     = ['Reagan Eggert', 'Kevin Weaver', 'Shayne Snow']
   s.email       = 'kweaver@athenahealth.com'
   s.files       = Dir['lib/**/*.rb']
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.1.0' # due to use of required keyword args
 
-  s.add_runtime_dependency 'ladon', '1.1.0'
+  s.add_runtime_dependency 'ladon', '1.1.1'
   s.add_runtime_dependency 'watir', '6.5.0'
   s.add_runtime_dependency 'page-object', '2.1.1'
   s.add_runtime_dependency 'selenium-webdriver', '3.4.0'
