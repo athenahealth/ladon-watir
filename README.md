@@ -15,3 +15,9 @@ Feel free to [open an issue](https://gitlab.athenahealth.com/ladon/ladon-watir/i
 ## Contributing
 
 All are welcome to contribute! Please read the [contribution guidelines](CONTRIBUTING.md) first.
+
+## Licensing
+
+Copyright 2017 athenahealth, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"). Refer to [LICENSE] for authoritative licensing details.
