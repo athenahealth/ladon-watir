@@ -20,4 +20,4 @@ All are welcome to contribute! Please read the [contribution guidelines](CONTRIB
 
 Copyright 2017 athenahealth, Inc.
 
-Licensed under the Apache License, Version 2.0 (the "License"). Refer to [LICENSE] for authoritative licensing details.
+Licensed under the Apache License, Version 2.0 (the "License"). Refer to [LICENSE](LICENSE) for authoritative licensing details.
