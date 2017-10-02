@@ -1,16 +1,14 @@
 # Ladon::Watir - A Web Application Modeling and Automation Framework
 
-[![build status](https://gitlab.athenahealth.com/ladon/ladon-watir/badges/master/build.svg)](https://gitlab.athenahealth.com/ladon/ladon-watir/commits/master) [![coverage report](https://gitlab.athenahealth.com/ladon/ladon-watir/badges/master/coverage.svg)](https://gitlab.athenahealth.com/ladon/ladon-watir/commits/master)
-
-[Ladon](https://gitlab.athenahealth.com/ladon/ladon) is "A Software Modeling and Automation Framework." [Watir](http://watir.github.io/) is a set of libraries for automating web browsers. Put them together, and you get a powerful tool for testing web applications.
+[Ladon](https://github.com/athenahealth/ladon) is "A Software Modeling and Automation Framework." [Watir](http://watir.github.io/) is a set of libraries for automating web browsers. Put them together, and you get a powerful tool for testing web applications.
 
 ## Installation
 
-Check out the [Installation Guide](https://gitlab.athenahealth.com/ladon/ladon-watir/wikis/installation)
+Check out the [Installation Guide](https://github.com/athenahealth/ladon-watir/wiki/Installation)
 
 ## Support
 
-Feel free to [open an issue](https://gitlab.athenahealth.com/ladon/ladon-watir/issues/new).
+Feel free to [open an issue](https://github.com/athenahealth/ladon-watir/issues/new).
 
 ## Contributing
 
