@@ -14,8 +14,8 @@ source 'https://rubygems.org' do
   gem 'watir', '6.5.0'
 end
 
-source 'http://rubygems.athenahealth.com' do
-  gem 'ladon', '1.1.1.rc.1'
+git 'https://github.com/athenahealth/ladon.git' do
+  gem 'ladon'
 end
 
 gem 'ladon-watir', path: '.'
