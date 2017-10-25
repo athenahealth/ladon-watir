@@ -296,7 +296,7 @@ module Ladon
       # @return [String] The sessionID associated with the Grid-based remote
       # webdriver browser.
       def grid_session_id
-        @browser.driver.capabilities['webdriver.remote.sessionid']
+        @browser.driver.session_id
       end
 
       # Get the "proxyId" of the remote grid node hosting our @browser driver.
