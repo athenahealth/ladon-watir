@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 2.3
+cache: bundler
+
+jobs:
+  include:
+    - stage: test
+      script: bundle exec rake rubocop
+    - script: bundle exec rake spec
+    - stage: build
+      script: bundle exec rake build
