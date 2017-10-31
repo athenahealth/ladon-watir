@@ -17,20 +17,10 @@ module Ladon
       #
       # @return [Ladon::Watir::Browser] The new browser object.
       def self.new_remote(url:, type:, platform:)
-        capabilities = Selenium::WebDriver::Remote::Capabilities
-                       .send(type, platform: platform)
-
-        @client = Selenium::WebDriver::Remote::Http::Default.new
-
-        # Increase timeout to 20 minutes to allow queued tests to process when
-        # grid resources free up.
-        @client.open_timeout = 60 * 20 # seconds.
-        @client.read_timeout = 60 * 20 # seconds.
-
-        return self.new(:remote,
-                        url: url.to_s,
-                        desired_capabilities: capabilities,
-                        http_client: @client)
+        return self.new(type, {
+          url: url.to_s,
+          platform: platform
+        })
       end
 
       # Get the height of the screen.
