@@ -3,8 +3,8 @@ require 'ladon/watir'
 
 # Represents the main page of youtube.com.
 class YouTubeIndexPage < Ladon::Watir::PageObjectState
-  text_field(:search, id: 'masthead-search-term')
-  button(:submit_search, id: 'search-btn')
+  text_field(:search, id: 'search')
+  button(:submit_search, id: 'search-icon-legacy')
 
   transition 'YouTubeResultsPage' do |t|
     t.target_loader { require 'models/page_objects/results' }
