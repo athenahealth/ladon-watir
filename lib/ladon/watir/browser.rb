@@ -17,10 +17,11 @@ module Ladon
       #
       # @return [Ladon::Watir::Browser] The new browser object.
       def self.new_remote(url:, type:, platform:)
-        return self.new(type, {
+        return self.new(
+          type,
           url: url.to_s,
           platform: platform
-        })
+        )
       end
 
       # Get the height of the screen.
