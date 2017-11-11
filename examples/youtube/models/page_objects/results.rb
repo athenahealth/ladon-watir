@@ -2,7 +2,7 @@ require 'ladon/watir'
 
 # Represents the search results page of youtube.com at /results.
 class YouTubeResultsPage < Ladon::Watir::PageObjectState
-  div(:results, id: 'results')
+  div(:results, id: 'content')
 
   transition 'YouTubeWatchPage' do |t|
     t.target_loader { require 'models/page_objects/watch' }
